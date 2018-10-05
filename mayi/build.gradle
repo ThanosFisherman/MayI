@@ -37,4 +37,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-//apply from: 'upload.gradle'
+//apply from: 'install.gradle'
+//apply from: 'bintray.gradle'
