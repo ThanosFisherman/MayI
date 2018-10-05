@@ -8,10 +8,11 @@ if (project.hasProperty("android")) { // Android libraries
         from android.sourceSets.main.java.srcDirs
     }
 
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
+    /* task javadoc(type: Javadoc) {
+         source = android.sourceSets.main.java.srcDirs
+         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+     }*/
+
 } else { // Java libraries
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
@@ -19,13 +20,18 @@ if (project.hasProperty("android")) { // Android libraries
     }
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+//disable Javadoc generation cuz it won't work -.-
+tasks.withType(Javadoc).all {
+    enabled = false
 }
 
+/*task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}*/
+
 artifacts {
-    archives javadocJar
+    //archives javadocJar
     archives sourcesJar
 }
 
@@ -43,7 +49,7 @@ bintray {
         name = rootProject.ext.bintrayName
         desc = rootProject.ext.libraryDescription
         websiteUrl = rootProject.ext.siteUrl
-        issueTrackerUrl = rootProject.ext.siteUrl+'/issues'
+        issueTrackerUrl = rootProject.ext.siteUrl + '/issues'
         vcsUrl = rootProject.ext.gitUrl
         licenses = rootProject.ext.allLicenses
         githubRepo = rootProject.ext.githubRepository //Optional Github repository
