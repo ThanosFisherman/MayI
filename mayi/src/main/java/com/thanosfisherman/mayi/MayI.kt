@@ -54,15 +54,9 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         }
     }
 
-    override fun withPermission(permission: String): IPermissionBuilder.SinglePermissionBuilder {
-        this.permissions = arrayOf(permission)
-        return this
-    }
+    override fun withPermission(permission: String) = apply { this.permissions = arrayOf(permission) }
 
-    override fun withPermissions(vararg permissions: String): IPermissionBuilder.MultiPermissionBuilder {
-        this.permissions = permissions
-        return this
-    }
+    override fun withPermissions(vararg permissions: String) = apply { this.permissions = permissions }
 
     override fun onResult(response: (PermissionBean) -> Unit): IPermissionBuilder.SinglePermissionBuilder {
         if (!isResultCalled) {
