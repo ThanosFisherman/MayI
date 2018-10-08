@@ -11,7 +11,7 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         IPermissionBuilder.SinglePermissionBuilder,
         IPermissionBuilder.MultiPermissionBuilder {
 
-    val activity = WeakReference<Activity>(activity)
+    private val activity = WeakReference<Activity>(activity)
     private var errorListener: ((Exception) -> Unit)? = null
     private var permissionResultSingleListener: ((PermissionBean) -> Unit)? = null
     private var rationaleSingleListener: ((PermissionBean, PermissionToken) -> Unit)? = null
@@ -22,15 +22,10 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
     private var isResultCalled = false
 
     companion object {
-        fun withActivity(activity: Activity): IPermissionBuilder.Permission {
-            return MayI(activity)
-        }
+        fun withActivity(activity: Activity) = MayI(activity)
     }
 
-    override fun onErrorListener(errorListener: (Exception) -> Unit): IPermissionBuilder {
-        this.errorListener = errorListener
-        return this
-    }
+    override fun onErrorListener(errorListener: (Exception) -> Unit) = apply { this.errorListener = errorListener }
 
     override fun check() {
         try {
