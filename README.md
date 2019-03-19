@@ -111,7 +111,7 @@ Add the following to your **app module** `build.gradle` file
 
 ```groovy
 dependencies {
-   compile 'com.thanosfisherman.mayi:mayi:<latest-version-number-here>'
+   implementation 'com.thanosfisherman.mayi:mayi:<latest-version-number-here>'
 }
 ```
 
