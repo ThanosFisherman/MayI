@@ -18,8 +18,8 @@ class MayIFragment : Fragment(), PermissionToken {
 
     private var permissionResultSingleListener: ((PermissionBean) -> Unit)? = null
     private var rationaleSingleListener: ((PermissionBean, PermissionToken) -> Unit)? = null
-    private var permissionResultMultiListener: ((Array<PermissionBean>) -> Unit)? = null
-    private var rationaleMultiListener: ((Array<PermissionBean>, PermissionToken) -> Unit)? = null
+    private var permissionResultMultiListener: ((List<PermissionBean>) -> Unit)? = null
+    private var rationaleMultiListener: ((List<PermissionBean>, PermissionToken) -> Unit)? = null
     private var isShowingNativeDialog: Boolean = false
     private lateinit var rationalePermissions: List<String>
     private lateinit var permissionMatcher: PermissionMatcher
@@ -30,25 +30,25 @@ class MayIFragment : Fragment(), PermissionToken {
             isShowingNativeDialog = false
             if (grantResults.isEmpty())
                 return
-            val beansResultList = LinkedList<PermissionBean>()
+            val beansResultList = mutableListOf<PermissionBean>()
 
             for (i in permissions.indices) {
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                     if (shouldShowRequestPermissionRationale(permissions[i]))
-                        beansResultList.add(PermissionBean(permissions[i], false, false))
+                        beansResultList.add(PermissionBean(permissions[i], isGranted = false, isPermanentlyDenied = false))
                     else
-                        beansResultList.add(PermissionBean(permissions[i], false, true))
+                        beansResultList.add(PermissionBean(permissions[i], isGranted = false, isPermanentlyDenied = true))
                 } else {
-                    beansResultList.add(PermissionBean(permissions[i], true, false))
+                    beansResultList.add(PermissionBean(permissions[i], isGranted = true, isPermanentlyDenied = false))
                 }
             }
 
             permissionResultSingleListener?.invoke(beansResultList[0])
 
-            permissionResultMultiListener?.let { function ->
+            permissionResultMultiListener?.let {
 
                 val grantedBeans = permissionMatcher.grantedPermissions.map { PermissionBean(it, true) }
-                function(beansResultList.plus(grantedBeans).toTypedArray())
+                it(beansResultList.plus(grantedBeans))
             }
         }
     }
@@ -65,7 +65,7 @@ class MayIFragment : Fragment(), PermissionToken {
             isShowingNativeDialog = true
         } else {
             rationaleSingleListener?.invoke(rationaleBeanList[0], PermissionRationaleToken(this))
-            rationaleMultiListener?.invoke(rationaleBeanList.toTypedArray(), PermissionRationaleToken(this))
+            rationaleMultiListener?.invoke(rationaleBeanList, PermissionRationaleToken(this))
         }
     }
 
@@ -86,18 +86,17 @@ class MayIFragment : Fragment(), PermissionToken {
         val totalBeanPermanentlyDenied = permissionMatcher.permissions
                 .filterNot { s -> permissionMatcher.deniedPermissions.contains(s) }
                 .filterNot { s -> permissionMatcher.grantedPermissions.contains(s) }
-                .map { PermissionBean(it, false, true) }
+                .map { PermissionBean(it, isGranted = false, isPermanentlyDenied = true) }
         permissionResultMultiListener?.invoke(totalBeanGranted.asSequence()
                 .plus(totalBeanDenied)
                 .plus(totalBeanPermanentlyDenied)
-                .toList()
-                .toTypedArray())
+                .toList())
     }
 
     internal fun setListeners(listenerResult: ((PermissionBean) -> Unit)?,
-                              listenerResultMulti: ((Array<PermissionBean>) -> Unit)?,
+                              listenerResultMulti: ((List<PermissionBean>) -> Unit)?,
                               rationaleSingle: ((PermissionBean, PermissionToken) -> Unit)?,
-                              rationaleMulti: ((Array<PermissionBean>, PermissionToken) -> Unit)?) {
+                              rationaleMulti: ((List<PermissionBean>, PermissionToken) -> Unit)?) {
         permissionResultSingleListener = listenerResult
         permissionResultMultiListener = listenerResultMulti
         rationaleSingleListener = rationaleSingle

@@ -18,7 +18,7 @@ interface IPermissionBuilder {
     }
 
     interface MultiPermissionBuilder : IPermissionBuilder {
-        fun onResult(response: (Array<PermissionBean>) -> Unit): MultiPermissionBuilder
-        fun onRationale(rationale: (Array<PermissionBean>, PermissionToken) -> Unit): MultiPermissionBuilder
+        fun onResult(response: (List<PermissionBean>) -> Unit): MultiPermissionBuilder
+        fun onRationale(rationale: (List<PermissionBean>, PermissionToken) -> Unit): MultiPermissionBuilder
     }
 }

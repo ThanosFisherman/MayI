@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.lang.ref.WeakReference
-import java.util.*
 
 class MayI private constructor(activity: Activity) : IPermissionBuilder,
         IPermissionBuilder.Permission,
@@ -15,13 +14,14 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
     private var errorListener: ((Exception) -> Unit)? = null
     private var permissionResultSingleListener: ((PermissionBean) -> Unit)? = null
     private var rationaleSingleListener: ((PermissionBean, PermissionToken) -> Unit)? = null
-    private var permissionResultMultiListener: ((Array<PermissionBean>) -> Unit)? = null
-    private var rationaleMultiListener: ((Array<PermissionBean>, PermissionToken) -> Unit)? = null
-    private lateinit var permissions: Array<out String>
+    private var permissionResultMultiListener: ((List<PermissionBean>) -> Unit)? = null
+    private var rationaleMultiListener: ((List<PermissionBean>, PermissionToken) -> Unit)? = null
+    private lateinit var permissions: List<String>
     private var isRationaleCalled = false
     private var isResultCalled = false
 
     companion object {
+        @JvmStatic
         fun withActivity(activity: Activity) = MayI(activity)
     }
 
@@ -29,10 +29,8 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
 
     override fun check() {
         try {
-            if (permissions.isEmpty())
-                throw IllegalArgumentException("You must specify at least one valid permission to check")
-            if (Arrays.asList<String>(*permissions).contains(null))
-                throw IllegalArgumentException("Permssions arguments must NOT contain null values")
+            require(permissions.isNotEmpty()) { "You must specify at least one valid permission to check" }
+            require(permissions.all { it.isNotBlank() }) { "Permissions arguments must NOT contain empty values" }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
                 grandEverything()
@@ -49,9 +47,9 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         }
     }
 
-    override fun withPermission(permission: String) = apply { this.permissions = arrayOf(permission) }
+    override fun withPermission(permission: String) = apply { this.permissions = listOf(permission) }
 
-    override fun withPermissions(vararg permissions: String) = apply { this.permissions = permissions }
+    override fun withPermissions(vararg permissions: String) = apply { this.permissions = permissions.toList() }
 
     override fun onResult(response: (PermissionBean) -> Unit): IPermissionBuilder.SinglePermissionBuilder {
         if (!isResultCalled) {
@@ -69,7 +67,7 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         return this
     }
 
-    override fun onResult(response: (Array<PermissionBean>) -> Unit): IPermissionBuilder.MultiPermissionBuilder {
+    override fun onResult(response: (List<PermissionBean>) -> Unit): IPermissionBuilder.MultiPermissionBuilder {
         if (!isResultCalled) {
             permissionResultMultiListener = response
             isResultCalled = true
@@ -77,7 +75,7 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         return this
     }
 
-    override fun onRationale(rationale: (Array<PermissionBean>, PermissionToken) -> Unit): IPermissionBuilder.MultiPermissionBuilder {
+    override fun onRationale(rationale: (List<PermissionBean>, PermissionToken) -> Unit): IPermissionBuilder.MultiPermissionBuilder {
         if (!isRationaleCalled) {
             rationaleMultiListener = rationale
             isRationaleCalled = true
@@ -108,9 +106,10 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
     }
 
     private fun grandEverything() {
-        val beans = Array(permissions.size) { PermissionBean(permissions[it], true, false) }
+        val beans = permissions.map { PermissionBean(it, isGranted = true, isPermanentlyDenied = false) }
+
         //TWO DIFFERENT WAYS TO CALL A FUNCTION
-        permissionResultSingleListener?.let { it(beans[0]) } //SAME AS BELOW
+        permissionResultSingleListener?.invoke(beans[0]) //SAME AS BELOW
         permissionResultMultiListener?.invoke(beans) //SAME AS ABOVE
 
     }
