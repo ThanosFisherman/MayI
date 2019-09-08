@@ -72,14 +72,14 @@ public MainActivity extends AppCompatActivity
 Again possible custom-defined methods for the above example could be something like:
 
 ```java
-private void permissionResultMulti(PermissionBean[] permissions)
+private void permissionResultMulti(List<PermissionBean> permissions)
 {
-    Toast.makeText(MainActivity.this, "MULTI PERMISSION RESULT " + Arrays.deepToString(permissions), Toast.LENGTH_LONG).show();
+    Toast.makeText(MainActivity.this, "MULTI PERMISSION RESULT " + permissions, Toast.LENGTH_LONG).show();
 }
 
-private void permissionRationaleMulti(PermissionBean[] permissions, PermissionToken token)
+private void permissionRationaleMulti(List<PermissionBean> permissions, PermissionToken token)
 {
-    Toast.makeText(MainActivity.this, "Rationales for Multiple Permissions " + Arrays.deepToString(permissions), Toast.LENGTH_LONG).show();
+    Toast.makeText(MainActivity.this, "Rationales for Multiple Permissions " + permissions, Toast.LENGTH_LONG).show();
     token.continuePermissionRequest();
 }
 ```
