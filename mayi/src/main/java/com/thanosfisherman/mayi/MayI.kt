@@ -25,7 +25,7 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         fun withActivity(activity: Activity) = MayI(activity)
     }
 
-    override fun onErrorListener(errorListener: (Exception) -> Unit) = apply { this.errorListener = errorListener }
+    override fun onErrorListener(errorListener: (Exception) -> Unit): IPermissionBuilder = apply { this.errorListener = errorListener }
 
     override fun check() {
         try {
@@ -47,9 +47,9 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         }
     }
 
-    override fun withPermission(permission: String) = apply { this.permissions = listOf(permission) }
+    override fun withPermission(permission: String): IPermissionBuilder.SinglePermissionBuilder = apply { this.permissions = listOf(permission) }
 
-    override fun withPermissions(vararg permissions: String) = apply { this.permissions = permissions.toList() }
+    override fun withPermissions(vararg permissions: String): IPermissionBuilder.MultiPermissionBuilder = apply { this.permissions = permissions.toList() }
 
     override fun onResult(response: (PermissionBean) -> Unit): IPermissionBuilder.SinglePermissionBuilder {
         if (!isResultCalled) {

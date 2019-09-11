@@ -22,3 +22,11 @@ interface IPermissionBuilder {
         fun onRationale(rationale: (List<PermissionBean>, PermissionToken) -> Unit): MultiPermissionBuilder
     }
 }
+
+interface Consumer<T> {
+    fun accept(t: T)
+}
+
+interface BiConsumer<T, U> {
+    fun accept(t: T, u: U)
+}
