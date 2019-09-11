@@ -22,7 +22,7 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
 
     companion object {
         @JvmStatic
-        fun withActivity(activity: Activity) = MayI(activity)
+        fun withActivity(activity: Activity): IPermissionBuilder.Permission = MayI(activity)
     }
 
     override fun onErrorListener(errorListener: (Exception) -> Unit): IPermissionBuilder = apply { this.errorListener = errorListener }
