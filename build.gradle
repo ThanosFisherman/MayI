@@ -30,8 +30,8 @@ ext {
     buildToolsVersion = '28.0.3'
     minSdkVersion = 15
     targetSdkVersion = 28
-    publishVersionName = '2.2.0'
-    publishVersionCode = 9
+    publishVersionName = '2.2.1'
+    publishVersionCode = 10
 
     currentVersionDesc = 'MayI current version'
     bintrayRepo = 'maven'
