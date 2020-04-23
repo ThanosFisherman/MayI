@@ -10,7 +10,7 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         IPermissionBuilder.SinglePermissionBuilder,
         IPermissionBuilder.MultiPermissionBuilder {
 
-    private val activity = WeakReference<Activity>(activity)
+    private val activity = WeakReference(activity)
     private var errorListener: ((Exception) -> Unit)? = null
     private var permissionResultSingleListener: ((PermissionBean) -> Unit)? = null
     private var rationaleSingleListener: ((PermissionBean, PermissionToken) -> Unit)? = null

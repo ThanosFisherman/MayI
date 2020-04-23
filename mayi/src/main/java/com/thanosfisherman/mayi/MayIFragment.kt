@@ -6,7 +6,6 @@ import android.app.Fragment
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.annotation.RequiresApi
-import java.util.*
 
 
 class MayIFragment : Fragment(), PermissionToken {
