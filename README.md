@@ -29,7 +29,7 @@ Usage
 -----
 
 ### Single Permission
-To request a **single permission** using this library, you just need to call `Mayi` with a valid `Activity` and use `withPermission` method:
+To request a **single permission** using this library, you just need to call `MayI` with a valid `Activity` and use `withPermission` method:
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
