@@ -20,15 +20,15 @@ To request a **single permission** using this library, you just need to call `Ma
 
 ```kotlin
 public MainActivity : AppCompatActivity() {
-	@Override 
-	public void onCreate() {
-	    super.onCreate();
-	       MayI.withActivity(this)
-              .withPermission(Manifest.permission.READ_CONTACTS)
-              .onResult(this::permissionResultSingle)
-              .onRationale(this::permissionRationaleSingle)
-              .check()
-	}
+	
+	override fun onCreate(savedInstanceState: Bundle?) {
+	     super.onCreate(savedInstanceState: Bundle?)
+	     MayI.withActivity(this)
+            .withPermission(Manifest.permission.READ_CONTACTS)
+            .onResult(this::permissionResultSingle)
+            .onRationale(this::permissionRationaleSingle)
+            .check()
+
 }
 ```
 
@@ -53,15 +53,15 @@ the lambda expressions from the example above could be replaced with method refe
 
 ```kotlin
 public MainActivity : AppCompatActivity() {
-	@Override 
-	public void onCreate() {
-	    super.onCreate();
-            MayI.withActivity(this)
-               .withPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION)
-               .onRationale(this::permissionRationaleMulti)
-               .onResult(this::permissionResultMulti)
-               .onErrorListener(this::inCaseOfError)
-               .check()
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+	   	 super.onCreate(savedInstanceState: Bundle?)
+         MayI.withActivity(this)
+            .withPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION)
+            .onRationale(this::permissionRationaleMulti)
+            .onResult(this::permissionResultMulti)
+            .onErrorListener(this::inCaseOfError)
+            .check()
 	}
 }
 ```
