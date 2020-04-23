@@ -12,6 +12,19 @@ Screenshot
 
 ![Demo screenshot](mayi_screenshot.gif "gif demo")
 
+
+Dependency
+----------------------
+[![Download](https://api.bintray.com/packages/thanosfisherman/maven/mayi/images/download.svg)](https://bintray.com/thanosfisherman/maven/mayi/_latestVersion)
+
+Add the following to your **app module** `build.gradle` file
+
+```groovy
+dependencies {
+   implementation 'com.thanosfisherman.mayi:mayi:<latest-version-number-here>'
+}
+```
+
 Usage
 -----
 
@@ -19,10 +32,11 @@ Usage
 To request a **single permission** using this library, you just need to call `Mayi` with a valid `Activity` and use `withPermission` method:
 
 ```kotlin
-public MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 	     super.onCreate(savedInstanceState: Bundle?)
+
 	     MayI.withActivity(this)
             .withPermission(Manifest.permission.READ_CONTACTS)
             .onResult(this::permissionResultSingle)
@@ -35,16 +49,16 @@ public MainActivity : AppCompatActivity() {
 `permissionResultSingle` and `permissionRationaleSingle` could be custom-defined methods of your own that would deal accordingly in each situation. For Example:
 
 ```kotlin
-    private fun permissionResultSingle(permission: PermissionBean) {
-        Toast.makeText(this, "PERMISSION RESULT $permission", Toast.LENGTH_LONG).show()
-        Log.i("MainActivity", "PERMISSION RESULT $permission")
-    }
+private fun permissionResultSingle(permission: PermissionBean) {
+    Toast.makeText(this, "PERMISSION RESULT $permission", Toast.LENGTH_LONG).show()
+    Log.i("MainActivity", "PERMISSION RESULT $permission")
+}
  
-    private fun permissionRationaleSingle(bean: PermissionBean, token: PermissionToken) {
-        Toast.makeText(this, "Should show rationale for " + bean.simpleName + " permission", Toast.LENGTH_LONG).show()
-        Log.i("MainActivity", "Should show rationale for ${bean.simpleName}")
-        token.skipPermissionRequest()
-    }
+private fun permissionRationaleSingle(bean: PermissionBean, token: PermissionToken) {
+    Toast.makeText(this, "Should show rationale for " + bean.simpleName + " permission", Toast.LENGTH_LONG).show()
+    Log.i("MainActivity", "Should show rationale for ${bean.simpleName}")
+    token.skipPermissionRequest()
+}
 ```
 
 ### Multiple Permissions
@@ -52,10 +66,11 @@ Similarly to request **multiple permissions** at once, you just need to call `Ma
 the lambda expressions from the example above could be replaced with method references like so:
 
 ```kotlin
-public MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 	   	 super.onCreate(savedInstanceState: Bundle?)
+
          MayI.withActivity(this)
             .withPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION)
             .onRationale(this::permissionRationaleMulti)
@@ -69,18 +84,18 @@ public MainActivity : AppCompatActivity() {
 Again possible custom-defined methods for the above example could be something like:
 
 ```kotlin
-    private fun permissionResultMulti(permissions: List<PermissionBean>) {
-        Toast.makeText(this, "MULTI PERMISSION RESULT $permissions", Toast.LENGTH_LONG).show()
-        Log.i("MainActivity", "MULTI PERMISSION RESULT $permissions")
+private fun permissionResultMulti(permissions: List<PermissionBean>) {
+    Toast.makeText(this, "MULTI PERMISSION RESULT $permissions", Toast.LENGTH_LONG).show()
+    Log.i("MainActivity", "MULTI PERMISSION RESULT $permissions")
 
-    }
+}
 
-    private fun permissionRationaleMulti(permissions: List<PermissionBean>, token: PermissionToken) {
-        Toast.makeText(this, "Rationales for Multiple Permissions $permissions", Toast.LENGTH_LONG).show()
-        Log.i("MainActivity", "Rationales for Multiple Permissions $permissions")
+private fun permissionRationaleMulti(permissions: List<PermissionBean>, token: PermissionToken) {
+    Toast.makeText(this, "Rationales for Multiple Permissions $permissions", Toast.LENGTH_LONG).show()
+    Log.i("MainActivity", "Rationales for Multiple Permissions $permissions")
 
-        token.continuePermissionRequest()
-    }
+    token.continuePermissionRequest()
+}
 ```
 
 ### Error handling
@@ -94,26 +109,13 @@ If you think there is going to be an error in your Mayi integration, just call a
        .onErrorListener(this::inCaseOfError)
        .check()
     
- private fun inCaseOfError(e: Exception) {
-        Toast.makeText(this, "ERROR $e", Toast.LENGTH_SHORT).show()
-        Log.e("MainActivity", "ERROR $e")
-
+private fun inCaseOfError(e: Exception) {
+       Toast.makeText(this, "ERROR $e", Toast.LENGTH_SHORT).show()
+       Log.e("MainActivity", "ERROR $e")
  }
 ```
 
 The library will then notify you when something unexpected happens.
-
-Add it to your project
-----------------------
-[![Download](https://api.bintray.com/packages/thanosfisherman/maven/mayi/images/download.svg)](https://bintray.com/thanosfisherman/maven/mayi/_latestVersion)
-
-Add the following to your **app module** `build.gradle` file
-
-```groovy
-dependencies {
-   implementation 'com.thanosfisherman.mayi:mayi:<latest-version-number-here>'
-}
-```
 
 Library Flow
 ------------
