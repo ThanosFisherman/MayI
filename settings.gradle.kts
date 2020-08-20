@@ -1,3 +1,2 @@
-rootProject.name = "MayI"
-include("sample")
-include("mayi")
+rootProject.buildFileName = "build.gradle.kts"
+include(":mayi", ":sample")
