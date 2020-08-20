@@ -129,7 +129,7 @@ bintray {
         repo = "maven"
         name = Artifact.BINTRAY_NAME
         setLicenses("Apache-2.0")
-        setLabels("Kotlin", "android", "bluetooth", "coroutines", "flow")
+        setLabels("Kotlin", "android", "permissions", "runtime")
         vcsUrl = Artifact.POM_SCM_URL
         websiteUrl = Artifact.POM_URL
         issueTrackerUrl = Artifact.POM_ISSUE_URL
