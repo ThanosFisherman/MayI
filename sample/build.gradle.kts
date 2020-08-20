@@ -16,12 +16,18 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+
+        getByName(BuildType.DEBUG) {
+            isMinifyEnabled = BuildTypeDebug.isMinifyEnabled
+            isShrinkResources = BuildTypeDebug.isShrinkResources
+            isDebuggable = BuildTypeDebug.isDebuggable
+        }
+
+        getByName(BuildType.RELEASE) {
+            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
+            isShrinkResources = BuildTypeRelease.isShrinkResources
+            isDebuggable = BuildTypeRelease.isDebuggable
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 

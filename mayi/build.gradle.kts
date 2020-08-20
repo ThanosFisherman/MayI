@@ -27,12 +27,16 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+
+        getByName(BuildType.DEBUG) {
+            isMinifyEnabled = BuildTypeDebug.isMinifyEnabled
+            isDebuggable = BuildTypeDebug.isDebuggable
+        }
+
+        getByName(BuildType.RELEASE) {
+            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
+            isDebuggable = BuildTypeRelease.isDebuggable
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
@@ -75,7 +79,7 @@ publishing {
             version = Artifact.VERSION_NAME
             //from(components["java"])
             artifacts {
-                artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+                artifact("$buildDir/outputs/aar/${project.name}-debug.aar")
                 artifact(sourcesJar)
                 artifact(dokkaJar)
             }
