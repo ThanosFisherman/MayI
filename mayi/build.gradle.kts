@@ -56,8 +56,8 @@ dependencies {
 val dokkaTask by tasks.creating(org.jetbrains.dokka.gradle.DokkaTask::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "Assembles Kotlin docs with Dokka"
-    outputFormat = "javadoc"
-    outputDirectory = "$buildDir/dokka"
+    outputDirectory.set(File("$buildDir/dokka"))
+    //documentationFileName.set("README.md")
 }
 
 val dokkaJar by tasks.creating(Jar::class) {
