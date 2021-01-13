@@ -9,9 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import com.thanosfisherman.mayi.MayI
 import com.thanosfisherman.mayi.PermissionBean
 import com.thanosfisherman.mayi.PermissionToken
+import io.github.thanosfisherman.blueflow.sample.common.isAndroidQAndAbove
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    private val permissionsArray: Array<String> =
+        if (isAndroidQAndAbove())
+            arrayOf(
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
+        else
+            arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_COARSE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,29 +31,29 @@ class MainActivity : AppCompatActivity() {
         val buttonContacts = findViewById<Button>(R.id.contacts_permission_button)
         buttonContacts.setOnClickListener {
             MayI.withActivity(this)
-                    .withPermission(Manifest.permission.READ_CONTACTS)
-                    .onResult(this::permissionResultSingle)
-                    .onRationale(this::permissionRationaleSingle)
-                    .check()
+                .withPermission(Manifest.permission.READ_CONTACTS)
+                .onResult(this::permissionResultSingle)
+                .onRationale(this::permissionRationaleSingle)
+                .check()
         }
 
         val buttonLocation = findViewById<Button>(R.id.location_permission_button)
         buttonLocation.setOnClickListener {
             MayI.withActivity(this)
-                    .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    .onResult(this::permissionResultSingle)
-                    .onRationale(this::permissionRationaleSingle)
-                    .check()
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .onResult(this::permissionResultSingle)
+                .onRationale(this::permissionRationaleSingle)
+                .check()
         }
 
         val buttonAll = findViewById<Button>(R.id.all_permissions_button)
         buttonAll.setOnClickListener {
             MayI.withActivity(this)
-                    .withPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION)
-                    .onRationale(this::permissionRationaleMulti)
-                    .onResult(this::permissionResultMulti)
-                    .onErrorListener(this::inCaseOfError)
-                    .check()
+                .withPermissions(*permissionsArray)
+                .onRationale(this::permissionRationaleMulti)
+                .onResult(this::permissionResultMulti)
+                .onErrorListener(this::inCaseOfError)
+                .check()
         }
     }
 
@@ -53,11 +64,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun permissionRationaleSingle(bean: PermissionBean, token: PermissionToken) {
         if (bean.simpleName.toLowerCase(Locale.getDefault()).contains("contacts")) {
-            Toast.makeText(this, "Should show rationale for " + bean.simpleName + " permission", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Should show rationale for " + bean.simpleName + " permission",
+                Toast.LENGTH_LONG
+            ).show()
             Log.i("MainActivity", "Should show rationale for ${bean.simpleName}")
             token.skipPermissionRequest()
         } else {
-            Toast.makeText(this, "Should show rationale for " + bean.simpleName + " permission", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Should show rationale for " + bean.simpleName + " permission",
+                Toast.LENGTH_LONG
+            ).show()
             Log.i("MainActivity", "Should show rationale for ${bean.simpleName}")
             token.continuePermissionRequest()
         }
@@ -69,8 +88,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun permissionRationaleMulti(permissions: List<PermissionBean>, token: PermissionToken) {
-        Toast.makeText(this, "Rationales for Multiple Permissions $permissions", Toast.LENGTH_LONG).show()
+    private fun permissionRationaleMulti(
+        permissions: List<PermissionBean>,
+        token: PermissionToken
+    ) {
+        Toast.makeText(this, "Rationales for Multiple Permissions $permissions", Toast.LENGTH_LONG)
+            .show()
         Log.i("MainActivity", "Rationales for Multiple Permissions $permissions")
 
         token.continuePermissionRequest()

@@ -6,9 +6,9 @@ import androidx.annotation.RequiresApi
 import java.lang.ref.WeakReference
 
 class MayI private constructor(activity: Activity) : IPermissionBuilder,
-        IPermissionBuilder.Permission,
-        IPermissionBuilder.SinglePermissionBuilder,
-        IPermissionBuilder.MultiPermissionBuilder {
+    IPermissionBuilder.Permission,
+    IPermissionBuilder.SinglePermissionBuilder,
+    IPermissionBuilder.MultiPermissionBuilder {
 
     private val activity = WeakReference(activity)
     private var errorListener: ((Exception) -> Unit)? = null
@@ -25,7 +25,12 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         fun withActivity(activity: Activity): IPermissionBuilder.Permission = MayI(activity)
     }
 
-    override fun onErrorListener(errorListener: (Exception) -> Unit): IPermissionBuilder = apply { this.errorListener = errorListener }
+    override fun onErrorListener(errorListener: (Exception) -> Unit): IPermissionBuilder =
+        apply { this.errorListener = errorListener }
+
+    override fun onErrorListener(errorListener: ErrorListener): IPermissionBuilder {
+        return onErrorListener { error: Exception -> errorListener.onErrorAction(error) }
+    }
 
     override fun check() {
         try {
@@ -47,9 +52,11 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         }
     }
 
-    override fun withPermission(permission: String): IPermissionBuilder.SinglePermissionBuilder = apply { this.permissions = listOf(permission) }
+    override fun withPermission(permission: String): IPermissionBuilder.SinglePermissionBuilder =
+        apply { this.permissions = listOf(permission) }
 
-    override fun withPermissions(vararg permissions: String): IPermissionBuilder.MultiPermissionBuilder = apply { this.permissions = permissions.toList() }
+    override fun withPermissions(vararg permissions: String): IPermissionBuilder.MultiPermissionBuilder =
+        apply { this.permissions = permissions.toList() }
 
     override fun onResult(response: (PermissionBean) -> Unit): IPermissionBuilder.SinglePermissionBuilder {
         if (!isResultCalled) {
@@ -57,6 +64,10 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
             isResultCalled = true
         }
         return this
+    }
+
+    override fun onResult(response: PermissionResultSingleListener): IPermissionBuilder.SinglePermissionBuilder {
+        return onResult { bean: PermissionBean -> response.onPermissionResultAction(bean) }
     }
 
     override fun onRationale(rationale: (PermissionBean, PermissionToken) -> Unit): IPermissionBuilder.SinglePermissionBuilder {
@@ -67,12 +78,20 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         return this
     }
 
+    override fun onRationale(rationale: RationaleSingleListener): IPermissionBuilder.SinglePermissionBuilder {
+        return onRationale { bean: PermissionBean, token: PermissionToken -> rationale.onRationaleAction(bean, token) }
+    }
+
     override fun onResult(response: (List<PermissionBean>) -> Unit): IPermissionBuilder.MultiPermissionBuilder {
         if (!isResultCalled) {
             permissionResultMultiListener = response
             isResultCalled = true
         }
         return this
+    }
+
+    override fun onResult(response: PermissionResultMultiListener): IPermissionBuilder.MultiPermissionBuilder {
+        return onResult { list: List<PermissionBean> -> response.onPermissionResultsAction(list) }
     }
 
     override fun onRationale(rationale: (List<PermissionBean>, PermissionToken) -> Unit): IPermissionBuilder.MultiPermissionBuilder {
@@ -83,10 +102,15 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         return this
     }
 
+    override fun onRationale(rationale: RationaleMultiListener): IPermissionBuilder.MultiPermissionBuilder {
+        return onRationale { list: List<PermissionBean>, token: PermissionToken -> rationale.onRationalesAction(list, token) }
+    }
+
     @Suppress("DEPRECATION")
     @RequiresApi(api = Build.VERSION_CODES.M)
     private fun initializeFragmentAndCheck(permissionMatcher: PermissionMatcher) {
-        var mayiFrag: MayIFragment? = activity.get()?.fragmentManager?.findFragmentByTag(MayIFragment.TAG) as MayIFragment?
+        var mayiFrag: MayIFragment? =
+            activity.get()?.fragmentManager?.findFragmentByTag(MayIFragment.TAG) as MayIFragment?
 
         mayiFrag = mayiFrag ?: kotlin.run {
             val fragmentManager = activity.get()!!.fragmentManager
@@ -100,13 +124,19 @@ class MayI private constructor(activity: Activity) : IPermissionBuilder,
         }
 
         mayiFrag.let {
-            it.setListeners(permissionResultSingleListener, permissionResultMultiListener, rationaleSingleListener, rationaleMultiListener)
+            it.setListeners(
+                permissionResultSingleListener,
+                permissionResultMultiListener,
+                rationaleSingleListener,
+                rationaleMultiListener
+            )
             it.checkPermissions(permissionMatcher)
         }
     }
 
     private fun grandEverything() {
-        val beans = permissions.map { PermissionBean(it, isGranted = true, isPermanentlyDenied = false) }
+        val beans =
+            permissions.map { PermissionBean(it, isGranted = true, isPermanentlyDenied = false) }
 
         //TWO DIFFERENT WAYS TO CALL A FUNCTION
         permissionResultSingleListener?.invoke(beans[0]) //SAME AS BELOW

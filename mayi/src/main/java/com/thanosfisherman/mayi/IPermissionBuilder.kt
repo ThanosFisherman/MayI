@@ -2,6 +2,7 @@ package com.thanosfisherman.mayi
 
 interface IPermissionBuilder {
     fun onErrorListener(errorListener: (Exception) -> Unit): IPermissionBuilder
+    fun onErrorListener(errorListener: ErrorListener): IPermissionBuilder
     fun check()
 
     interface Permission {
@@ -15,11 +16,17 @@ interface IPermissionBuilder {
     interface SinglePermissionBuilder : IPermissionBuilder {
         fun onResult(response: (PermissionBean) -> Unit): SinglePermissionBuilder
         fun onRationale(rationale: (PermissionBean, PermissionToken) -> Unit): SinglePermissionBuilder
+
+        fun onResult(response: PermissionResultSingleListener): SinglePermissionBuilder
+        fun onRationale(rationale: RationaleSingleListener): SinglePermissionBuilder
     }
 
     interface MultiPermissionBuilder : IPermissionBuilder {
         fun onResult(response: (List<PermissionBean>) -> Unit): MultiPermissionBuilder
         fun onRationale(rationale: (List<PermissionBean>, PermissionToken) -> Unit): MultiPermissionBuilder
+
+        fun onResult(response: PermissionResultMultiListener): MultiPermissionBuilder
+        fun onRationale(rationale: RationaleMultiListener): MultiPermissionBuilder
     }
 }
 

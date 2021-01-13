@@ -13,7 +13,7 @@ import com.thanosfisherman.mayi.PermissionToken;
 
 import java.util.List;
 
-import kotlin.Unit;
+import io.github.thanosfisherman.blueflow.sample.common.AndroidVersionsKt;
 
 public class MainJavaActivity extends AppCompatActivity {
 
@@ -27,11 +27,9 @@ public class MainJavaActivity extends AppCompatActivity {
                 .withPermission(Manifest.permission.READ_CONTACTS)
                 .onResult(permissionBean -> {
                     permissionResultSingle(permissionBean);
-                    return Unit.INSTANCE;
                 })
                 .onRationale((permissionBean, permissionToken) -> {
                     permissionRationaleSingle(permissionBean, permissionToken);
-                    return Unit.INSTANCE;
                 })
                 .check());
 
@@ -40,28 +38,23 @@ public class MainJavaActivity extends AppCompatActivity {
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .onResult(permissionBean -> {
                     permissionResultSingle(permissionBean);
-                    return Unit.INSTANCE;
                 })
                 .onRationale((permissionBean, permissionToken) -> {
                     permissionRationaleSingle(permissionBean, permissionToken);
-                    return Unit.INSTANCE;
                 })
                 .check());
 
         Button buttonAll = findViewById(R.id.all_permissions_button);
         buttonAll.setOnClickListener(v -> MayI.withActivity(this)
-                .withPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION)
+                .withPermissions(createPermissionsArray())
                 .onRationale((permissionBeans, permissionToken) -> {
                     permissionRationaleMulti(permissionBeans, permissionToken);
-                    return Unit.INSTANCE;
                 })
                 .onResult(permissionBeans -> {
                     permissionResultMulti(permissionBeans);
-                    return Unit.INSTANCE;
                 })
                 .onErrorListener(e -> {
                     inCaseOfError(e);
-                    return Unit.INSTANCE;
                 })
                 .check());
 
@@ -97,5 +90,20 @@ public class MainJavaActivity extends AppCompatActivity {
 
     private void inCaseOfError(Exception e) {
         Toast.makeText(this, "ERROR " + e.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    private String[] createPermissionsArray() {
+        final String[] permissions;
+        if (AndroidVersionsKt.isAndroidQAndAbove()) {
+            permissions = new String[3];
+            permissions[0] = Manifest.permission.READ_CONTACTS;
+            permissions[1] = Manifest.permission.ACCESS_COARSE_LOCATION;
+            permissions[2] = Manifest.permission.ACCESS_BACKGROUND_LOCATION;
+        } else {
+            permissions = new String[2];
+            permissions[0] = Manifest.permission.READ_CONTACTS;
+            permissions[1] = Manifest.permission.ACCESS_COARSE_LOCATION;
+        }
+        return permissions;
     }
 }
