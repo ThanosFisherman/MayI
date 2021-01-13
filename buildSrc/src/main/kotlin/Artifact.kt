@@ -2,8 +2,8 @@ object Artifact {
 
     val ARTIFACT_NAME = "mayi"
     val ARTIFACT_GROUP = "com.thanosfisherman.mayi"
-    val VERSION_NAME = "2.3.1"
-    val VERSION_CODE = 12
+    val VERSION_NAME = "2.4.0"
+    val VERSION_CODE = 13
     val POM_URL = "https://github.com/ThanosFisherman/MayI"
     val POM_SCM_URL = "https://github.com/ThanosFisherman/MayI"
     val POM_ISSUE_URL = "https://github.com/ThanosFisherman/MayI/issues"
