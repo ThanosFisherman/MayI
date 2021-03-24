@@ -10,10 +10,10 @@ private object LibraryVersion {
     const val multiDexVersion = "1.0.3"
 
     const val androidxVersion = "1.2.0"
-    const val lifecycleVersionX = "2.2.0"
-    const val constraintLayoutVersion = "2.1.0-alpha2"
+    const val lifecycleVersionX = "2.3.1"
+    const val constraintLayoutVersion = "2.1.0-beta01"
     const val recyclerViewVersion = "1.1.0"
-    const val materialVersion = "1.3.0-beta01"
+    const val materialVersion = "1.4.0-alpha01"
     const val coilVersion = "1.1.1"
     const val progressButtonVersion = "2.1.0"
     const val flowBindingsVersion = "0.12.0"
@@ -22,9 +22,9 @@ private object LibraryVersion {
 
 // Versions consts that are used across libraries and Gradle plugins
 object CoreVersion {
-    const val KOTLIN = "1.4.21"
+    const val KOTLIN = "1.4.31"
     const val KTLINT = "0.36.0"
-    const val NAVIGATION = "2.3.2"
+    const val NAVIGATION = "2.3.4"
 }
 
 object LibDependency {
