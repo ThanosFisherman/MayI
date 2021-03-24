@@ -5,12 +5,12 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 fun DependencyHandler.addAppModuleDependencies() {
     implementation(project(ModuleDependency.LIB))
     AppDependency.getAll().forEach { implementation(it) }
+    add("coreLibraryDesugaring", AppDependency.desugaring)
 }
 
 fun DependencyHandler.addLibModuleDependencies() {
     LibDependency.getAll().forEach { implementation(it) }
 }
-
 
 fun DependencyHandler.addTestDependencies() {
 

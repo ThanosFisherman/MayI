@@ -1,7 +1,9 @@
 plugins {
     id(GradlePluginId.ANDROID_APPLICATION)
     id(GradlePluginId.KOTLIN_ANDROID)
-    id(GradlePluginId.KOTLIN_ANDROID_EXTENSIONS)
+    id(GradlePluginId.KOTLIN_PARCELIZE)
+    id(GradlePluginId.SAFE_ARGS)
+    //id(GradlePluginId.KOTLIN_ANDROID_EXTENSIONS)
 }
 
 android {
@@ -30,10 +32,16 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-
+    buildFeatures {
+        viewBinding = true
+    }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 

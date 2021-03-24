@@ -10,7 +10,7 @@ private object LibraryVersion {
     const val multiDexVersion = "1.0.3"
 
     const val androidxVersion = "1.2.0"
-    const val lifecycleVersionX = "2.3.1"
+    const val lifecycleVersionX = "2.2.0"
     const val constraintLayoutVersion = "2.1.0-beta01"
     const val recyclerViewVersion = "1.1.0"
     const val materialVersion = "1.4.0-alpha01"
@@ -25,6 +25,7 @@ object CoreVersion {
     const val KOTLIN = "1.4.31"
     const val KTLINT = "0.36.0"
     const val NAVIGATION = "2.3.4"
+    const val DESUGARING = "1.1.1"
 }
 
 object LibDependency {
@@ -41,6 +42,7 @@ object LibDependency {
 
 object AppDependency {
 
+    val desugaring = "com.android.tools:desugar_jdk_libs:${CoreVersion.DESUGARING}"
     const val multiDex = "com.android.support:multidex:${LibraryVersion.multiDexVersion}"
     const val androidX = "androidx.appcompat:appcompat:${LibraryVersion.androidxVersion}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${LibraryVersion.constraintLayoutVersion}"

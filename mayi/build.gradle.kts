@@ -4,7 +4,6 @@ import java.util.*
 plugins {
     id(GradlePluginId.ANDROID_LIBRARY)
     id(GradlePluginId.KOTLIN_ANDROID)
-    id(GradlePluginId.KOTLIN_ANDROID_EXTENSIONS)
     // Documentation for our code
     id(GradlePluginId.DOKKA) version GradlePluginVersion.DOKKA_VERSION
     // Publication to bintray
@@ -43,6 +42,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 

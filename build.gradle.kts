@@ -9,6 +9,7 @@ buildscript {
 
         classpath(GradlePluginId.ANDROID_GRADLE_PLUGIN)
         classpath(GradlePluginId.KOTLIN_GRADLE_PLUGIN)
+        classpath(GradlePluginId.SAFE_ARGS_GRADLE_PLUGIN)
     }
 }
 
@@ -24,6 +25,11 @@ allprojects {
     }
 }
 
+tasks {
+    val clean by registering(Delete::class) {
+        delete(buildDir)
+    }
+}
 tasks.withType<DependencyUpdatesTask> {
 
     // Reject all non stable versions
