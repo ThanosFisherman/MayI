@@ -6,16 +6,14 @@ plugins {
     id(GradlePluginId.KOTLIN_ANDROID)
     // Documentation for our code
     id(GradlePluginId.DOKKA) version GradlePluginVersion.DOKKA_VERSION
-    // Publication to bintray
-    id(GradlePluginId.BINTRAY) version GradlePluginVersion.BINTRAY_VERSION
     // Maven publication
     `maven-publish`
+    signing
 }
 
 android {
     compileSdkVersion(AndroidConfig.COMPILE_SDK_VERSION)
     //buildToolsVersion("29.0.3")
-
 
     defaultConfig {
         minSdkVersion(AndroidConfig.MIN_SDK_VERSION)
@@ -109,6 +107,7 @@ publishing {
     }
 }
 
+/*
 bintray {
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").inputStream())
@@ -146,4 +145,4 @@ bintray {
             vcsTag = Artifact.VERSION_NAME
         }
     }
-}
+}*/

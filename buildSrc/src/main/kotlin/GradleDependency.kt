@@ -3,7 +3,6 @@ object GradlePluginVersion {
     const val KOTLIN = CoreVersion.KOTLIN
     const val SAFE_ARGS = CoreVersion.NAVIGATION
     const val DOKKA_VERSION = "1.4.30"
-    const val BINTRAY_VERSION = "1.8.5"
 
     const val KTLINT_GRADLE = "9.2.1"
     const val DETEKT = "1.9.1"
@@ -28,7 +27,6 @@ object GradlePluginId {
     const val KOTLIN_PARCELIZE = "kotlin-parcelize"
     //const val KOTLIN_ANDROID_EXTENSIONS = "org.jetbrains.kotlin.android.extensions"
     const val DOKKA = "org.jetbrains.dokka"
-    const val BINTRAY = "com.jfrog.bintray"
     const val KOTLIN_KAPT = "org.jetbrains.kotlin.kapt"
     const val DETEKT = "io.gitlab.arturbosch.detekt"
     const val KTLINT = "org.jlleitschuh.gradle.ktlint"
