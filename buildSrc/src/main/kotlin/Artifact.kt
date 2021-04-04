@@ -27,4 +27,5 @@ object Artifact {
 
     val RELEASE_REPO_URL = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
     val SNAPSHOT_REPO_URL = "https://oss.sonatype.org/content/repositories/snapshots"
+    val REPO_NAME = "sonatype"
 }

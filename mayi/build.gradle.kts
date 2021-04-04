@@ -9,6 +9,7 @@ plugins {
     `maven-publish`
     signing
 }
+
 val credentialsMap: Map<String, String> = LinkedHashMap<String, String>().apply {
     val propertiesFile = project.rootProject.file("local.properties")
     if (propertiesFile.exists() && propertiesFile.canRead()) {
@@ -99,6 +100,8 @@ artifacts {
     archives(dokkaJar)
 }
 
+credentialsMap.forEach { extra.set(it.key, it.value) }
+
 publishing {
     publications {
         create<MavenPublication>(Artifact.ARTIFACT_NAME) {
@@ -145,6 +148,7 @@ publishing {
                         // change URLs to point to your repos, e.g. http://my.org/repo
                         val releasesRepoUrl = uri(Artifact.RELEASE_REPO_URL)
                         val snapshotsRepoUrl = uri(Artifact.SNAPSHOT_REPO_URL)
+                        name = Artifact.REPO_NAME
                         url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
                         credentials {
                             username = credentialsMap["ossrhUsername"]
