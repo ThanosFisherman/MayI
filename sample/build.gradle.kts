@@ -50,4 +50,5 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     addAppModuleDependencies()
     addTestDependencies()
+    //implementation("io.github.thanosfisherman.mayi:mayi:2.5.0")
 }
