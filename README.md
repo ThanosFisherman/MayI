@@ -2,8 +2,8 @@
 
 #### [View Releases and Changelogs](https://github.com/ThanosFisherman/MayI/releases)
 
-![Maven Central](https://img.shields.io/maven-central/v/io.github.thanosfisherman.mayi/mayi?style=for-the-badge)
-![Hex.pm](https://img.shields.io/hexpm/l/plug?style=for-the-badge)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.thanosfisherman.mayi/mayi?style=for-the-badge)](https://repo1.maven.org/maven2/io/github/thanosfisherman/mayi/mayi/)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug?style=for-the-badge)]((https://opensource.org/licenses/Apache-2.0))
 
 ---
 
