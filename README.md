@@ -1,3 +1,12 @@
+# MayI
+
+#### [View Releases and Changelogs](https://github.com/ThanosFisherman/MayI/releases)
+
+![Maven Central](https://img.shields.io/maven-central/v/io.github.thanosfisherman.mayi/mayi?style=for-the-badge)
+![Hex.pm](https://img.shields.io/hexpm/l/plug?style=for-the-badge)
+
+---
+
 <img src="Logotype primary.png" width="40%" height="40%" />
 
 MayI is yet another library that simplifies the process of requesting permissions at runtime for devices that run Android Marshmallow and above.
@@ -15,7 +24,6 @@ Screenshot
 
 Dependency
 ----------------------
-[![Download](https://api.bintray.com/packages/thanosfisherman/maven/mayi/images/download.svg)](https://bintray.com/thanosfisherman/maven/mayi/_latestVersion)
 
 Add the following to your **app module** `build.gradle` file
 
