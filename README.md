@@ -29,7 +29,7 @@ Add the following to your **app module** `build.gradle` file
 
 ```groovy
 dependencies {
-   implementation 'com.thanosfisherman.mayi:mayi:<latest-version-number-here>'
+    implementation 'io.github.thanosfisherman.mayi:mayi:<latest-version-number-here>'
 }
 ```
 
